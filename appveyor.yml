@@ -19,19 +19,19 @@ test_script:
 artifacts:
   - path: .\dist\shub.exe
     name: "shub Windows binary"
-    type: zip
+  - path: .\dist\shub-%APPVEYOR_REPO_TAG_NAME%-windows.zip 
+    name: "zipped shub Windows binary"
 
-before_deploy:
+after_build:
   - 7z a .\dist\shub-%APPVEYOR_REPO_TAG_NAME%-windows.zip %APPVEYOR_BUILD_FOLDER%\dist\shub.exe
 
 deploy:
   provider: GitHub
   # Should never be used as we'll have created a release before AppVeyor deploy
-  description: 'shub'
+  # description: 'shub'
   auth_token:
     secure: mNA38grRkwGjw4zSUX1qA67eE6CRPjk97hRngZf19FuopBwbpPjOALBIlYZWKlDv
   artifact: .\dist\shub-%APPVEYOR_REPO_TAG_NAME%-windows.zip
   draft: true
-  prerelease: true
   on:
     appveyor_repo_tag: true
