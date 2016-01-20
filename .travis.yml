@@ -10,7 +10,7 @@ matrix:
 branches:
   only:
     - master
-    - /^v\d+\.\d+\.\d+[a-z0-9]*$/
+    - /^v\d+\.\d+\.\d+[a-z0-9\-]*$/
 
 install:
   - "./.travis-workarounds.sh"
