@@ -106,6 +106,8 @@ def patch_sys_executable():
                 # Explicitly ask for installing 2.7
                 raise NotFoundException("Please install Python 2.7")
         sys.executable = py_exe
+        # Naaasty stuff
+        os.environ.pop('LD_LIBRARY_PATH', None)
         yield
         sys.executable = orig_exe
     else:
@@ -198,6 +200,7 @@ def run_python(args):
     output.
     """
     with patch_sys_executable():
+        print os.environ
         output = subprocess.check_output([sys.executable] + args)
         return output.decode(STDOUT_ENCODING).strip()
 
