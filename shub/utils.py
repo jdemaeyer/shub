@@ -198,7 +198,8 @@ def run_python(args):
     output.
     """
     with patch_sys_executable():
-        output = subprocess.check_output([sys.executable] + args)
+        output = subprocess.check_output(" ".join([sys.executable] + args),
+                                         shell=True)
         return output.decode(STDOUT_ENCODING).strip()
 
 
