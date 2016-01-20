@@ -20,7 +20,8 @@ install:
 script: tox -e py27,freeze
 
 before_deploy:
-  - ./freeze/deploy/before_deploy.sh
+  - tar -czf dist/shub-${TRAVIS_TAG}-${TRAVIS_OS_NAME}.tar.gz -C dist shub
+
 deploy:
   # provider: pypi
   # distributions: sdist bdist_wheel
