@@ -105,11 +105,16 @@ def patch_sys_executable():
             except NotFoundException:
                 # Explicitly ask for installing 2.7
                 raise NotFoundException("Please install Python 2.7")
+        # PyInstaller sets this environment variable in its bootloader. Remove
+        # it so the system-wide Python installation uses its own library path
+        # (this is particularly important if the system Python version differs
+        # from the Python version that the binary was compiled with)
+        orig_lib_path = os.environ.pop('LD_LIBRARY_PATH', None)
         sys.executable = py_exe
-        # Naaasty stuff
-        os.environ.pop('LD_LIBRARY_PATH', None)
         yield
         sys.executable = orig_exe
+        if orig_lib_path:
+            os.environ[str('LD_LIBRARY_PATH')] = orig_lib_path
     else:
         yield
 
@@ -200,7 +205,6 @@ def run_python(args):
     output.
     """
     with patch_sys_executable():
-        print os.environ
         output = subprocess.check_output([sys.executable] + args)
         return output.decode(STDOUT_ENCODING).strip()
 
