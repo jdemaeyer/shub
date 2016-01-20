@@ -3,7 +3,7 @@ version: '{branch}-{build}'
 branches:
   only:
     - master
-    - /^v\d+\.\d+$/
+    - /^v\d+\.\d+\.\d+[\w\-]*$/
 
 install:
   - "SET PATH=C:\\Python27;C:\\Python27\\Scripts;%PATH%"
@@ -19,3 +19,16 @@ test_script:
 artifacts:
   - path: .\dist\shub.exe
     name: "shub Windows binary"
+    type: zip
+
+deploy:
+  provider: GitHub
+  # Should never be used as we'll have created a release before AppVeyor deploy
+  description: 'shub'
+  auth_token:
+    secure: mNA38grRkwGjw4zSUX1qA67eE6CRPjk97hRngZf19FuopBwbpPjOALBIlYZWKlDv
+  artifact: dist\shub.exe
+  draft: true
+  prerelease: true
+  on:
+    appveyor_repo_tag: true
