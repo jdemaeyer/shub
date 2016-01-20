@@ -2,7 +2,7 @@ click
 requests
 ruamel.yaml
 six
-pip<8.0
+pip
 
 hubstorage
 scrapinghub

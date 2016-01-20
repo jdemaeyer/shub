@@ -9,8 +9,11 @@ install:
   - "SET PATH=C:\\Python27;C:\\Python27\\Scripts;%PATH%"
   - "SET TOX_TESTENV_PASSENV=HOME USERPROFILE HOMEPATH HOMEDRIVE"
   - "pip install -U tox twine wheel"
+  # Force pip 7.1.2 in binary, to avoid https://github.com/pypa/pip/issues/3383
+  # Can most probably be removed when pip 8.0.1 is released
+  - "python -m pip install --upgrade pip==7.1.2"
 
-# Build the binary after tests
+# No build stage, binaries are built in 'freeze' test environment
 build: false
 
 test_script:
@@ -25,8 +28,6 @@ after_test:
 
 deploy:
   provider: GitHub
-  # Should never be used as we'll have created a release before AppVeyor deploy
-  # description: 'shub'
   auth_token:
     secure: mNA38grRkwGjw4zSUX1qA67eE6CRPjk97hRngZf19FuopBwbpPjOALBIlYZWKlDv
   artifact: dist\shub-$(APPVEYOR_REPO_TAG_NAME)-windows.zip
