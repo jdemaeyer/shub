@@ -17,16 +17,11 @@ test_script:
   - tox -e py27,freeze
 
 artifacts:
-  - path: .\dist\shub.exe
-    name: "shub Windows binary"
-  - path: shub-%APPVEYOR_REPO_TAG_NAME%-windows.zip 
-    name: "zipped shub Windows binary"
-#  - path: test.zip
-#    name: "My test zip"
+  - path: dist\shub.exe
+  - path: dist\shub-$(APPVEYOR_REPO_TAG_NAME)-windows.zip
 
 after_build:
-  - 7z a shub-%APPVEYOR_REPO_TAG_NAME%-windows.zip %APPVEYOR_BUILD_FOLDER%\dist\shub.exe
-#  - 7z a test.zip %APPVEYOR_BUILD_FOLDER%\dist\shub.exe
+  - 7z a dist\shub-%APPVEYOR_REPO_TAG_NAME%-windows.zip %APPVEYOR_BUILD_FOLDER%\dist\shub.exe
 
 deploy:
   provider: GitHub
@@ -34,7 +29,7 @@ deploy:
   # description: 'shub'
   auth_token:
     secure: mNA38grRkwGjw4zSUX1qA67eE6CRPjk97hRngZf19FuopBwbpPjOALBIlYZWKlDv
-  artifact: dist\shub-%APPVEYOR_REPO_TAG_NAME%-windows.zip
+  artifact: dist\shub-$(APPVEYOR_REPO_TAG_NAME)-windows.zip
   draft: true
   on:
     appveyor_repo_tag: true
