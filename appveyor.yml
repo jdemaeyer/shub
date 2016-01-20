@@ -1,3 +1,5 @@
+platform: x86
+
 version: '{branch}-{build}'
 
 branches:
@@ -9,9 +11,6 @@ install:
   - "SET PATH=C:\\Python27;C:\\Python27\\Scripts;%PATH%"
   - "SET TOX_TESTENV_PASSENV=HOME USERPROFILE HOMEPATH HOMEDRIVE"
   - "pip install -U tox twine wheel"
-  # Force pip 7.1.2 in binary, to avoid https://github.com/pypa/pip/issues/3383
-  # Can most probably be removed when pip 8.0.1 is released
-  - "python -m pip install --upgrade pip==7.1.2"
 
 # No build stage, binaries are built in 'freeze' test environment
 build: false
@@ -21,16 +20,16 @@ test_script:
 
 artifacts:
   - path: dist\shub.exe
-  - path: dist\shub-$(APPVEYOR_REPO_TAG_NAME)-windows.zip
+  - path: dist\shub-$(APPVEYOR_REPO_TAG_NAME)-windows-x86.zip
 
 after_test:
-  - 7z a dist\shub-%APPVEYOR_REPO_TAG_NAME%-windows.zip %APPVEYOR_BUILD_FOLDER%\dist\shub.exe
+  - 7z a dist\shub-%APPVEYOR_REPO_TAG_NAME%-windows-x86.zip %APPVEYOR_BUILD_FOLDER%\dist\shub.exe
 
 deploy:
   provider: GitHub
   auth_token:
     secure: mNA38grRkwGjw4zSUX1qA67eE6CRPjk97hRngZf19FuopBwbpPjOALBIlYZWKlDv
-  artifact: dist\shub-$(APPVEYOR_REPO_TAG_NAME)-windows.zip
+  artifact: dist\shub-$(APPVEYOR_REPO_TAG_NAME)-windows-x86.zip
   draft: true
   on:
     appveyor_repo_tag: true
